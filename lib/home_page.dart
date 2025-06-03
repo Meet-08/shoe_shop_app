@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/global_variable.dart';
 import 'package:shop_app/product_card.dart';
+import 'package:shop_app/product_details_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,16 +31,16 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: Column(
           children: [
-            const Row(
+            Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: const EdgeInsets.all(20),
                   child: Text(
                     "Shoes\ncollection",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-                Expanded(
+                const Expanded(
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: "Search",
@@ -94,11 +95,20 @@ class _HomePageState extends State<HomePage> {
                 itemCount: products.length,
                 itemBuilder: (context, index) {
                   final product = products[index];
-                  return ProductCard(
-                    title: product["title"],
-                    price: product["price"],
-                    imageUrl: product["imageUrl"],
-                    index: index,
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ProductDetailsPage(product: product);
+                        },
+                      ),
+                    ),
+                    child: ProductCard(
+                      title: product["title"] as String,
+                      price: product["price"] as double,
+                      imageUrl: product["imageUrl"] as String,
+                      index: index,
+                    ),
                   );
                 },
               ),
