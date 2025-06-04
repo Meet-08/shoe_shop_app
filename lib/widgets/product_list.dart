@@ -34,6 +34,14 @@ class _ProductListState extends State<ProductList> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusScope.of(context).unfocus();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     const border = OutlineInputBorder(
       borderSide: BorderSide(color: Color.fromRGBO(225, 225, 225, 1)),
