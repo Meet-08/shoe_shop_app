@@ -11,14 +11,26 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-  final List<String> filters = const ["All", "Adidas", "Nike", "Bata"];
+  final List<String> filters = const ["All", "Adidas", "Nike", "Puma"];
+  late List<Map<String, Object>> filteredProducts = products;
   late String selectedFilter;
   int currentPage = 0;
+
+  void selectFilter(String filter) {
+    setState(() {
+      selectedFilter = filter;
+      filteredProducts = products.where((product) {
+        if (selectedFilter == "All") return true;
+        return product["company"] == selectedFilter;
+      }).toList();
+    });
+  }
 
   @override
   void initState() {
     super.initState();
     selectedFilter = filters[0];
+    filteredProducts = products;
   }
 
   @override
@@ -40,9 +52,25 @@ class _ProductListState extends State<ProductList> {
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
-              const Expanded(
+              Expanded(
                 child: TextField(
-                  decoration: InputDecoration(
+                  onChanged: (value) {
+                    setState(() {
+                      if (value.isEmpty) {
+                        filteredProducts = products;
+                        return;
+                      }
+                      filteredProducts = products
+                          .where(
+                            (product) => product["title"]
+                                .toString()
+                                .toLowerCase()
+                                .contains(value.toLowerCase()),
+                          )
+                          .toList();
+                    });
+                  },
+                  decoration: const InputDecoration(
                     hintText: "Search",
                     prefixIcon: Icon(Icons.search),
                     border: border,
@@ -63,11 +91,7 @@ class _ProductListState extends State<ProductList> {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedFilter = filter;
-                      });
-                    },
+                    onTap: () => selectFilter(filter),
                     child: Chip(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 13,
@@ -92,9 +116,9 @@ class _ProductListState extends State<ProductList> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: products.length,
+              itemCount: filteredProducts.length,
               itemBuilder: (context, index) {
-                final product = products[index];
+                final product = filteredProducts[index];
                 return GestureDetector(
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute(

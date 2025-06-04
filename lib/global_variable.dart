@@ -17,29 +17,34 @@ final products = [
   },
   {
     "id": "2",
-    "title": "Bata Women's Shoes",
-    "price": 28.52,
-    "sizes": [8, 9, 10],
-    "company": "Bata",
-    "imageUrl": "assets/images/shoes_3.png",
-  },
-  {
-    "id": "3",
     "title": "Jordan Shoes",
     "price": 420.69,
     "sizes": [8, 9, 10, 11],
     "company": "Nike",
     "imageUrl": "assets/images/shoes_4.png",
   },
-];
-
-const cart = [
   {
     "id": "3",
-    "title": "Jordan Shoes",
-    "price": 420.69,
-    "size": 8,
+    "title": "Puma Men's Hybrid NX",
+    "price": 58.30,
+    "sizes": [7, 8, 9, 10, 11],
+    "company": "Puma",
+    "imageUrl": "assets/images/puma_hybrid_nx.png",
+  },
+  {
+    "id": "4",
+    "title": "Adidas Running Shoes",
+    "price": 35.99,
+    "sizes": [8, 9, 10],
+    "company": "Adidas",
+    "imageUrl": "assets/images/adidas_running.png",
+  },
+  {
+    "id": "5",
+    "title": "Nike Dunk High",
+    "price": 110.00,
+    "sizes": [9, 10, 11, 12],
     "company": "Nike",
-    "imageUrl": "assets/images/shoes_4.png",
+    "imageUrl": "assets/images/nike_dunk_high.png",
   },
 ];
