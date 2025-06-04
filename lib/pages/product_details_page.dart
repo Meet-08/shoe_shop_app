@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/provider/cart_provider.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Map<String, Object> product;
@@ -10,6 +12,35 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   int selectedSize = 0;
+
+  void addToCart() {
+    if (selectedSize != 0) {
+      {
+        Provider.of<CartProvider>(context, listen: false).addToCart({
+          "id": widget.product["id"],
+          "title": widget.product["title"],
+          "price": widget.product["price"],
+          "size": selectedSize,
+          "company": widget.product["company"],
+          "imageUrl": widget.product["imageUrl"],
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Product added to cart!"),
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please select a size."),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +97,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   ),
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: addToCart,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     minimumSize: const Size(double.infinity, 50),
                   ),
-                  child: const Text(
-                    "Add to Cart",
-                    style: TextStyle(color: Colors.black, fontSize: 18),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: 12,
+                    children: [
+                      Icon(Icons.shopping_cart, size: 30, color: Colors.black),
+                      Text(
+                        "Add to Cart",
+                        style: TextStyle(color: Colors.black, fontSize: 18),
+                      ),
+                    ],
                   ),
                 ),
               ],
