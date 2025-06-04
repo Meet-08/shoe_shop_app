@@ -11,6 +11,7 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  final FocusNode _searchFocusNode = FocusNode();
   final List<String> filters = const ["All", "Adidas", "Nike", "Puma"];
   late List<Map<String, Object>> filteredProducts = products;
   late String selectedFilter;
@@ -34,11 +35,9 @@ class _ProductListState extends State<ProductList> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FocusScope.of(context).unfocus();
-    });
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,7 +53,7 @@ class _ProductListState extends State<ProductList> {
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(18),
                 child: Text(
                   "Shoes\ncollection",
                   style: Theme.of(context).textTheme.titleLarge,
@@ -62,6 +61,8 @@ class _ProductListState extends State<ProductList> {
               ),
               Expanded(
                 child: TextField(
+                  focusNode: _searchFocusNode,
+                  autofocus: false,
                   onChanged: (value) {
                     setState(() {
                       if (value.isEmpty) {
@@ -128,13 +129,16 @@ class _ProductListState extends State<ProductList> {
               itemBuilder: (context, index) {
                 final product = filteredProducts[index];
                 return GestureDetector(
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) {
-                        return ProductDetailsPage(product: product);
-                      },
-                    ),
-                  ),
+                  onTap: () {
+                    _searchFocusNode.unfocus();
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ProductDetailsPage(product: product);
+                        },
+                      ),
+                    );
+                  },
                   child: ProductCard(
                     title: product["title"] as String,
                     price: product["price"] as double,

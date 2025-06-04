@@ -16,7 +16,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: currentPage, children: pages),
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: IndexedStack(index: currentPage, children: pages),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
         onTap: (value) => setState(() {

@@ -8,7 +8,6 @@ class CartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context, listen: true);
-
     return Scaffold(
       appBar: AppBar(title: const Text("Cart"), centerTitle: true),
       body: ListView.builder(
